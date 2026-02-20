@@ -68,12 +68,57 @@ public class EmprestimoDAO {
 
     public Emprestimo buscarPorId(int id) throws SQLException{
 
+        String query = """
+                SELECT id, livro_id, usuario_id, data_emprestimo, data_devolucao
+                FROM emprestimo
+                WHERE id = ?
+                """;
+
+        try(Connection conn = Conexao.conectar();
+        PreparedStatement stmt = conn.prepareStatement(query)){
+
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if(rs.next()){
+                int livro_id = rs.getInt("livro_id");
+                int usuario_id = rs.getInt("usuario_id");
+                LocalDate data_emprestimo = rs.getDate("data_emprestimo").toLocalDate();
+                LocalDate data_devolucao = rs.getDate("data_devolucao").toLocalDate();
+
+                return new Emprestimo(id, livro_id, usuario_id, data_emprestimo, data_devolucao);
+            }
+
+        }
+
         return null;
     }
 
     public Emprestimo atualizar(Emprestimo emprestimo, int id) throws SQLException{
 
-        return null;
+        String query = """
+                UPDATE emprestimo
+                SET livro_id = ?,
+                usuario_id = ?,
+                data_emprestimo = ?,
+                data_devolucao = ?
+                where id = ?
+                """;
+
+        try(Connection conn = Conexao.conectar();
+        PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setLong(1, emprestimo.getLivro_id());
+            stmt.setLong(2, emprestimo.getUsuario_id());
+            stmt.setDate(3, Date.valueOf(emprestimo.getData_emprestimo()));
+            stmt.setDate(4, Date.valueOf(emprestimo.getData_devolucao()));
+            stmt.setInt(5, id);
+            stmt.executeUpdate();
+
+        }
+        emprestimo.setId(id);
+
+        return emprestimo;
     }
 
     public void deletar(int id) throws SQLException{
