@@ -1,5 +1,7 @@
 package com.example.biblioteca.controller;
 
+import com.example.biblioteca.dto.EmprestimoRequisicaoDTO;
+import com.example.biblioteca.dto.EmprestimoRespostaDTO;
 import com.example.biblioteca.model.Emprestimo;
 import com.example.biblioteca.service.EmprestimoService;
 import org.springframework.stereotype.Controller;
@@ -20,10 +22,10 @@ public class EmprestimoController {
     }
 
     @PostMapping
-    public Emprestimo salvar(@RequestBody Emprestimo emprestimo){
+    public EmprestimoRespostaDTO salvar(@RequestBody EmprestimoRequisicaoDTO requisicaoDTO){
 
         try{
-            return emprestimoService.salvar(emprestimo);
+            return emprestimoService.salvar(requisicaoDTO);
         }catch (SQLException e){
             throw new RuntimeException(e.getMessage());
         }
@@ -31,7 +33,7 @@ public class EmprestimoController {
     }
 
     @GetMapping
-    public List<Emprestimo> listar(){
+    public List<EmprestimoRespostaDTO> listar(){
 
         try{
             return emprestimoService.listarTodos();
@@ -42,7 +44,7 @@ public class EmprestimoController {
     }
 
     @GetMapping("/{id}")
-    public Emprestimo buscarPorId(@PathVariable int id){
+    public EmprestimoRespostaDTO buscarPorId(@PathVariable int id){
 
         try{
             return emprestimoService.buscarPorId(id);
@@ -53,10 +55,10 @@ public class EmprestimoController {
     }
 
     @PutMapping("/{id}")
-    public Emprestimo atualizar(@RequestBody Emprestimo emprestimo, @PathVariable int id){
+    public EmprestimoRespostaDTO atualizar(@RequestBody EmprestimoRequisicaoDTO requisicaoDTO, @PathVariable int id){
 
         try{
-            return emprestimoService.atualizar(emprestimo, id);
+            return emprestimoService.atualizar(requisicaoDTO, id);
         }catch (SQLException e){
             throw new RuntimeException(e.getMessage());
         }

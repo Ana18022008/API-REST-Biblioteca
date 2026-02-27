@@ -1,5 +1,7 @@
 package com.example.biblioteca.controller;
 
+import com.example.biblioteca.dto.UsuarioRequisicaoDTO;
+import com.example.biblioteca.dto.UsuarioRespostaDTO;
 import com.example.biblioteca.model.Usuario;
 import com.example.biblioteca.service.UsuarioService;
 import org.springframework.stereotype.Controller;
@@ -20,10 +22,10 @@ public class UsuarioController {
     }
 
     @PostMapping
-    private Usuario salvar(@RequestBody Usuario usuario){
+    private UsuarioRespostaDTO salvar(@RequestBody UsuarioRequisicaoDTO requisicaoDTO){
 
         try{
-            return usuarioService.salvar(usuario);
+            return usuarioService.salvar(requisicaoDTO);
         }catch (SQLException e){
             throw new RuntimeException(e.getMessage());
         }
@@ -31,7 +33,7 @@ public class UsuarioController {
     }
 
     @GetMapping
-    private List<Usuario>listar(){
+    private List<UsuarioRespostaDTO>listar(){
 
         try{
             return usuarioService.listarTodos();
@@ -42,7 +44,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    private Usuario pesquisarPorId(@PathVariable int id){
+    private UsuarioRespostaDTO pesquisarPorId(@PathVariable int id){
 
         try{
             return usuarioService.buscarPorId(id);
@@ -53,10 +55,10 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    private Usuario atualizar(@RequestBody Usuario usuario,@PathVariable int id){
+    private UsuarioRespostaDTO atualizar(@RequestBody UsuarioRequisicaoDTO requisicaoDTO,@PathVariable int id){
 
         try{
-            return usuarioService.atualizar(usuario, id);
+            return usuarioService.atualizar(requisicaoDTO, id);
         }catch (SQLException e){
             throw new RuntimeException(e.getMessage());
         }
